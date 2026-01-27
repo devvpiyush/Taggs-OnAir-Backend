@@ -1,0 +1,34 @@
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
+.env.local
+
+# Next.js build output
+.next/
+out/
+
+# Nuxt.js build/generate output
+.nuxt/
+dist/
+.output/
+
+# Gatsby files
+.cache/
+public/ # Comment this line out if you want to track the public directory
+
+# Compiled/temporary files
+*.log
+*.lock
+pnpm-lock.yaml # if using pnpm
+yarn.lock     # if using yarn
+
+# Editor/OS specific files (optional, but recommended)
+.vscode/ # VSCode configuration
+.idea/   # IntelliJ configuration
+.DS_Store # macOS system files
+thumbs.db # Windows system files
