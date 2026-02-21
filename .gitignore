@@ -1,34 +1,31 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+
 # Dependency directories
 node_modules/
+# Use the following pattern for monorepos or nested node_modules folders
+# **/node_modules/ 
 
-# Optional npm cache directory
-.npm
+# Testing
+/coverage
+/.nyc_output
+/testem.json
 
-# dotenv environment variables file
+# Production
+/build
+/dist
+/npm-shrinkwrap.json
+
+# Environment variables
 .env
-.env.local
+.env.*
+# example: .env.local, .env.development.local, etc.
 
-# Next.js build output
-.next/
-out/
-
-# Nuxt.js build/generate output
-.nuxt/
-dist/
-.output/
-
-# Gatsby files
-.cache/
-public/ # Comment this line out if you want to track the public directory
-
-# Compiled/temporary files
-*.log
-*.lock
-pnpm-lock.yaml # if using pnpm
-yarn.lock     # if using yarn
-
-# Editor/OS specific files (optional, but recommended)
-.vscode/ # VSCode configuration
-.idea/   # IntelliJ configuration
-.DS_Store # macOS system files
-thumbs.db # Windows system files
+# Miscellaneous
+.DS_Store # macOS specific file
+npm-debug.log # old npm log file
+yarn-error.log # yarn error log file

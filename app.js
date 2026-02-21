@@ -6,7 +6,8 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
 // Local Modules
-import InternalsRouter from "./routers/InternalsRouter.js";
+import InternalRoutes from "./routers/internals.routes.js";
+import AuthRoutes from "./routers/auth.routes.js";
 
 // Load Enviornments
 dotenv.config();
@@ -18,6 +19,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
+    origin: process.env.CLIENT_URL,
   }),
 );
 app.use(cookieParser());
@@ -29,7 +31,8 @@ const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Routing
-app.use("/api/i", InternalsRouter);
+app.use("/api/i", InternalRoutes);
+app.use("/api/auth", AuthRoutes);
 
 app.listen(PORT, () => {
   console.log("✔  Server is Running Successfully!");

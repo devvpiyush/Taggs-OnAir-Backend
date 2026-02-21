@@ -2,11 +2,11 @@
 import express from "express";
 
 // Local Modules
-import { checkHealth } from "../controllers/InternalsController.js";
+import { checkHealth } from "../controllers/internals.controller.js";
 
 const InternalsRouter = express.Router();
 
-// GET Requests Handling
+// GET Routes
 InternalsRouter.get("/health", checkHealth);
 
 export default InternalsRouter;
