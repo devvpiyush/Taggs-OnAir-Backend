@@ -23,7 +23,7 @@ app.use(
   }),
 );
 app.use(cookieParser());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Constants
@@ -35,7 +35,7 @@ app.use("/api/i", InternalRoutes);
 app.use("/api/auth", AuthRoutes);
 
 app.listen(PORT, () => {
-  console.log("✔  Server is Running Successfully!");
+  console.log(`✔  Server is Running at http://localhost:${PORT}!`);
   mongoose
     .connect(MONGO_URI)
     .then(console.log("🚀 Connected to Taggs Database Successfully!"))

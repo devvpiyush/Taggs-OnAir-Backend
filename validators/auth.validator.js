@@ -2,12 +2,12 @@
 import { check } from "express-validator";
 
 // Local Modules
-import { RESERVED_USERNAMES } from "../data/Reserves";
-import { USERNAME_PROFANITES } from "../data/Profanites";
+import { RESERVED_USERNAMES } from "../data/Reserves.js";
+import { USERNAME_PROFANITES } from "../data/Profanites.js";
 
-export const UsernameValidator = () => {
+export const UsernameValidator = [
   check("username")
-    .exists()
+    .notEmpty()
     .withMessage("USERNAME_REQUIRED")
     .bail()
     .trim()
@@ -15,7 +15,6 @@ export const UsernameValidator = () => {
     .isLength({ min: 3, max: 21 })
     .withMessage("USERNAME_INVALID_LENGTH")
     .bail()
-    .not()
     .matches(/^[a-z0-9._]+$/)
     .withMessage("USERNAME_INVALID_CHARACTERS")
     .custom((value) => {
@@ -37,8 +36,7 @@ export const UsernameValidator = () => {
       return true;
     })
     .custom((value) => {
-      let normalized = value.replace(".", "");
-      normalized.replace("_", "");
+      let normalized = value.replace(/[._]/g, "");
       if (
         RESERVED_USERNAMES.includes(normalized) ||
         USERNAME_PROFANITES.includes(normalized)
@@ -46,5 +44,5 @@ export const UsernameValidator = () => {
         throw new Error("USERNAME_NOT_ALLOWED");
       }
       return true;
-    });
-};
+    }),
+];

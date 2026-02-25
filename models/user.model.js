@@ -1,7 +1,7 @@
 // External Modules
 import mongoose from "mongoose";
 
-const UserSchema = mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -9,23 +9,27 @@ const UserSchema = mongoose.Schema(
       lowercase: true,
       required: true,
       unique: true,
-      minLength: 3,
-      maxLength: 21,
+      minlength: 3,
+      maxlength: 21,
     },
-    name: { type: String, trim: true, default: "", maxLength: 30 },
+    name: { type: String, trim: true, default: "", maxlength: 30 },
     email: {
       type: String,
       trim: true,
       lowercase: true,
       required: true,
       unique: true,
-      minLength: 5,
-      maxLength: 254,
+      minlength: 5,
+      maxlength: 254,
     },
     password: { type: String, required: true, select: false },
-    bio: { type: String, trim: true, default: "", maxLength: 160 },
+    bio: { type: String, trim: true, default: "", maxlength: 160 },
     dateOfBirth: { type: Date, required: true },
-    gender: { type: String, enum: ["Male", "Female", "Other"] },
+    gender: {
+      type: String,
+      lowercase: true,
+      enum: ["male", "female", "other"],
+    },
     profilePictureUrl: {
       type: String,
       default:
@@ -43,7 +47,7 @@ const UserSchema = mongoose.Schema(
       enum: ["Active", "Suspended", "Deleted"],
       default: "Active",
     },
-    lastSeen: { type: Date, default: Date.now() },
+    lastSeen: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },
     postsCount: { type: Number, default: 0 },
     followersCount: { type: Number, default: 0 },
@@ -52,4 +56,4 @@ const UserSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model(UserSchema, "User");
+export default mongoose.model("User", UserSchema);
