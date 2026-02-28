@@ -5,7 +5,7 @@ import { check } from "express-validator";
 import { RESERVED_USERNAMES } from "../data/Reserves.js";
 import { USERNAME_PROFANITES } from "../data/Profanites.js";
 
-export const UsernameValidator = [
+export const ValidateUsername = [
   check("username")
     .notEmpty()
     .withMessage("USERNAME_REQUIRED")

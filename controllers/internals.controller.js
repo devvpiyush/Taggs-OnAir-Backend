@@ -1,6 +1,6 @@
-export const checkHealth = (req, res, next) => {
+export const checkHealth = (req, res) => {
   res.status(200).json({
-    isSuccess: true,
+    signal: "GREEN",
     message: "Connection established!",
   });
 };

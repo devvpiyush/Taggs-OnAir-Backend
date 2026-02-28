@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 // Local Modules
 import InternalRoutes from "./routers/internals.routes.js";
 import AuthRoutes from "./routers/auth.routes.js";
+import ChecksRoutes from "./routers/checks.routes.js";
 
 // Load Enviornments
 dotenv.config();
@@ -33,6 +34,7 @@ const MONGO_URI = process.env.MONGO_URI;
 // Routing
 app.use("/api/i", InternalRoutes);
 app.use("/api/auth", AuthRoutes);
+app.use("/api/check", ChecksRoutes);
 
 app.listen(PORT, () => {
   console.log(`✔  Server is Running at http://localhost:${PORT}!`);
