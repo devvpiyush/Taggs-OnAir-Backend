@@ -3,9 +3,7 @@ import UserModel from "../models/user.model.js";
 
 export const checkUsername = async (req, res, next) => {
   try {
-    const result = await UserModel.findOne({
-      username: req.body.username,
-    }).lean();
+    const result = await UserModel.findOne({ username: req.body.username });
 
     if (result) {
       return res.status(200).json({
@@ -31,7 +29,7 @@ export const checkUsername = async (req, res, next) => {
 
 export const verifyEmail = async (req, res, next) => {
   try {
-    const result = UserModel.findOne({ email: req.body.email }).lean();
+    const result = await UserModel.findOne({ email: req.body.email }).lean();
 
     if (result) {
       return res.status(200).json({
@@ -50,5 +48,7 @@ export const verifyEmail = async (req, res, next) => {
       message: "Email is Usable.",
       meta: { email: req.body.email },
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
