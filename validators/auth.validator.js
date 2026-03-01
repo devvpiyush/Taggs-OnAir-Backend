@@ -46,3 +46,25 @@ export const ValidateUsername = [
       return true;
     }),
 ];
+
+export const ValidateEmail = [
+  check("email")
+    .trim()
+    .toLowerCase()
+    .notEmpty()
+    .withMessage("EMAIL_REQUIRED")
+    .bail()
+    .isLength({ min: 5, max: 254 })
+    .withMessage("EMAIL_INVALID_LENGTH")
+    .bail()
+    .isEmail()
+    .withMessage("EMAIL_INVALID_FORMAT")
+    .custom((value) => {
+      const domain = value.split("@")[1];
+      if (!["gmail.com", "hotmail.com", "icloud.com"].includes(domain)) {
+        throw new Error("EMAIL_UNSUPPORTED_PROVIDER");
+      }
+
+      return true;
+    }),
+];

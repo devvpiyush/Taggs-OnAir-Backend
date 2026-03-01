@@ -28,3 +28,27 @@ export const checkUsername = async (req, res, next) => {
     throw Error(error);
   }
 };
+
+export const verifyEmail = async (req, res, next) => {
+  try {
+    const result = UserModel.findOne({ email: req.body.email }).lean();
+
+    if (result) {
+      return res.status(200).json({
+        isSuccess: false,
+        signal: "YELLOW",
+        code: "EMAIL_EXISTS",
+        message: "Email already exists.",
+        meta: { email: req.body.email },
+      });
+    }
+
+    return res.status(200).json({
+      isSuccess: true,
+      signal: "GREEN",
+      code: "EMAIL__USABLE",
+      message: "Email is Usable.",
+      meta: { email: req.body.email },
+    });
+  } catch (error) {}
+};
