@@ -6,11 +6,12 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
 // Local Modules
+import { transportMail } from "./services/mail.service.js";
 import InternalRoutes from "./routers/internals.routes.js";
 import AuthRoutes from "./routers/auth.routes.js";
 import ChecksRoutes from "./routers/checks.routes.js";
 
-// Load Enviornments
+// Load Enviornment Variables
 dotenv.config();
 
 // Create 'Express' App
@@ -37,10 +38,18 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/check", ChecksRoutes);
 
 app.listen(PORT, () => {
-  console.log(`✔  Server is Running at http://localhost:${PORT}!`);
+  console.log(`✔  Server is Running at http://localhost:${PORT}`);
   mongoose
     .connect(MONGO_URI)
-    .then(console.log("🚀 Connected to Taggs Database Successfully!"))
+    .then(() => {
+      console.log("🚀 Connected to Taggs Database Successfully!");
+      transportMail
+        .verify()
+        .then(() => console.log("🎈 Connected to Mail Successfully!"))
+        .catch((err) => {
+          console.log(err);
+        });
+    })
     .catch((err) => {
       console.log(err);
     });

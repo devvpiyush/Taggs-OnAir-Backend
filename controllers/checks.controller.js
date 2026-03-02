@@ -1,5 +1,8 @@
 // Local Modules
+import otpModel from "../models/otp.model.js";
 import UserModel from "../models/user.model.js";
+import { sendEmailOtp } from "../services/mail.service.js";
+import { createOTP, hashOTP, saveOTP } from "../utils/otp.util.js";
 
 export const checkUsername = async (req, res, next) => {
   try {
@@ -28,25 +31,40 @@ export const checkUsername = async (req, res, next) => {
 };
 
 export const verifyEmail = async (req, res, next) => {
+  const email = req.body.email;
   try {
-    const result = await UserModel.findOne({ email: req.body.email }).lean();
+    const mongoFind = await UserModel.findOne({ email }).lean();
 
-    if (result) {
+    if (mongoFind) {
       return res.status(200).json({
         isSuccess: false,
         signal: "YELLOW",
         code: "EMAIL_EXISTS",
         message: "Email already exists.",
-        meta: { email: req.body.email },
+        meta: { email },
       });
     }
+
+    const mongoDelete = await otpModel.deleteMany({
+      email,
+      purpose: "EMAIL_VERIFICATION",
+    });
+    console.log(mongoDelete);
+
+    const OTP = createOTP();
+
+    const OTP_HASH = await hashOTP(OTP);
+
+    await saveOTP("EMAIL_VERIFICATION", email, OTP_HASH);
+
+    await sendEmailOtp(email, OTP);
 
     return res.status(200).json({
       isSuccess: true,
       signal: "GREEN",
-      code: "EMAIL__USABLE",
-      message: "Email is Usable.",
-      meta: { email: req.body.email },
+      code: "OTP_SENT",
+      message: "OTP sent to the email.",
+      meta: { email },
     });
   } catch (error) {
     console.log(error);
