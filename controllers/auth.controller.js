@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 
 // Local Modules
-import {OTP as OTP_Template} from '../templates/email.js'
+import { OTP as OTP_Template } from "../templates/email.js";
 import catchAsync from "../utils/catchAsync.util.js";
 
 import { generateToken } from "../utils/jwt.util.js";
@@ -98,10 +98,10 @@ export const saveTempEmail = catchAsync(async (req, res, next) => {
   await saveOTP("EMAIL_VERIFICATION", email, OTP_HASH);
 
   await sendEmail({
-      to: email,
-      subject: "Your Taggs OTP",
-      html: OTP_Template(OTP),
-    });
+    to: email,
+    subject: "Your Taggs OTP",
+    html: OTP_Template(OTP),
+  });
 
   // Update Temporary User's email
   await TemporaryUserModel.updateOne({ _id: decoded._id }, { email });
@@ -133,7 +133,9 @@ export const verifyEmail = catchAsync(async (req, res, next) => {
   const verify = await verifyOTP(OTP, mongo.otp);
 
   if (!verify) {
-    await otpModel.updateOne({ email: mongod?.email }, {$inc: {attemptsYet: 1}}).lean();
+    await otpModel
+      .updateOne({ email: mongod?.email }, { $inc: { attemptsYet: 1 } })
+      .lean();
     return res.status(200).json({
       isSuccess: false,
       code: "INVALID_OTP",
@@ -145,5 +147,36 @@ export const verifyEmail = catchAsync(async (req, res, next) => {
     isSuccess: true,
     code: "OTP_VERIFIED",
     message: "OTP is Verified Successfully.",
+  });
+});
+
+export const resend = catchAsync(async (req, res, next) => {
+  const decoded = jwt.verify(req.cookies.TempAuthToken, process.env.JWT_SECRET);
+
+  const mongod = await TemporaryUserModel.findOne({ _id: decoded._id }).lean();
+
+  // Delete all Previous OTPs
+  await otpModel.deleteMany({
+    email: mongod.email,
+    purpose: "EMAIL_VERIFICATION",
+  });
+
+  const OTP = generateOTP();
+
+  const OTP_HASH = await hashOTP(OTP);
+
+  await saveOTP("EMAIL_VERIFICATION", mongod.email, OTP_HASH);
+
+  await sendEmail({
+    to: mongod.email,
+    subject: "Your OTP for Verification!",
+    html: OTP_Template(OTP),
+  });
+
+  return res.status(200).json({
+    isSuccess: true,
+    code: "OTP_RESENT",
+    message: "OTP resent successfully!",
+    meta: { email: mongod.email },
   });
 });

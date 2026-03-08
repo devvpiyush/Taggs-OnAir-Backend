@@ -12,6 +12,7 @@ import {
   saveTempEmail,
   onBoard,
   verifyEmail,
+  resend,
 } from "../controllers/auth.controller.js";
 import { verifyTempAuthToken } from "../middlewares/jwt.middleware.js";
 import handleValidate from "../middlewares/validate.middleware.js";
@@ -20,6 +21,7 @@ const AuthRouter = express.Router();
 
 // GET Requests
 AuthRouter.get("/onboard", onBoard);
+AuthRouter.get("/resend", verifyTempAuthToken, resend);
 
 // POST Requests
 AuthRouter.post(

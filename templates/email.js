@@ -1,9 +1,9 @@
 export const OTP = (otp) => {
-    return `<div style="background:#f4f6f8;padding:40px 0;font-family:Arial,Helvetica,sans-serif;">
+  return `<div style="background:#f4f6f8;padding:40px 0;font-family:Arial,Helvetica,sans-serif;">
   <table align="center" width="420" style="background:white;border-radius:12px;padding:40px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.05)">
     <tr>
       <td>
-        <img src="https://taggs.in/logo.png" width="120" alt="Taggs Logo" style="margin-bottom:20px"/>
+        <img src="https://taggs.in/logo-white.png" width="90" alt="Taggs Logo" style="margin-bottom:20px"/>
       </td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@ export const OTP = (otp) => {
     <tr>
       <td>
         <p style="font-size:13px;color:#888;">
-          This code expires in <b>5 minutes</b>.
+          This code expires in <b>15 minutes</b>.
         </p>
       </td>
     </tr>
@@ -59,4 +59,4 @@ export const OTP = (otp) => {
     </tr>
   </table>
 </div>`;
-}
+};
