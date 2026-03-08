@@ -3,8 +3,9 @@ import bcrypt from "bcrypt";
 
 // Local Modules
 import OTPModel from "../models/otp.model.js";
+import catchAsync from "../utils/catchAsync.util.js";
 
-export const createOTP = (length = 6) => {
+export const generateOTP = (length = 4) => {
   let OTP = "";
 
   for (let i = 0; i < length; i++) {
@@ -18,15 +19,15 @@ export const hashOTP = async (otp) => {
   return await bcrypt.hash(otp, 10);
 };
 
-export const saveOTP = async (purpose, email, otp) => {
-  try {
-    const res = await OTPModel.create({
-      email,
-      otp,
-      purpose,
-    });
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
+export const verifyOTP = async (otp, hash) => {
+  return await bcrypt.compare(otp, hash);
 };
+
+export const saveOTP = catchAsync(async (purpose, email, otp) => {
+  const res = await OTPModel.create({
+    email,
+    otp,
+    purpose,
+  });
+  return res;
+});

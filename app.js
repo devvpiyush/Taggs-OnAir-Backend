@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 import { transportMail } from "./services/mail.service.js";
 import InternalRoutes from "./routers/internals.routes.js";
 import AuthRoutes from "./routers/auth.routes.js";
-import ChecksRoutes from "./routers/checks.routes.js";
+import CheckRoutes from "./routers/check.routes.js";
 
 // Load Enviornment Variables
 dotenv.config();
@@ -35,7 +35,27 @@ const MONGO_URI = process.env.MONGO_URI;
 // Routing
 app.use("/api/i", InternalRoutes);
 app.use("/api/auth", AuthRoutes);
-app.use("/api/check", ChecksRoutes);
+app.use("/api/check", CheckRoutes);
+
+app.use((err, req, res, next) => {
+  // Default values
+  const statusCode = err.statusCode || 500;
+  const code = err.code || "INTERNAL_SERVER_ERROR";
+  const message = err.message || "Something went wrong";
+  const meta = err.meta || null;
+
+  // Build response object
+  const response = {
+    isSuccess: false,
+    code,
+    message,
+  };
+
+  // Attach meta only if exists
+  if (meta) response.meta = meta;
+
+  res.status(statusCode).json(response);
+});
 
 app.listen(PORT, () => {
   console.log(`✔  Server is Running at http://localhost:${PORT}`);

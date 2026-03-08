@@ -31,7 +31,6 @@ export const sendEmailOtp = async (email, OTP) => {
 
   return {
     isSuccess: true,
-    signal: "GREEN",
     code: "OTP_SENT",
     message: "OTP Sent Successfully!",
   };

@@ -68,3 +68,16 @@ export const ValidateEmail = [
       return true;
     }),
 ];
+
+export const ValidateOtp = [
+  check("otp")
+    .trim()
+    .notEmpty()
+    .withMessage("OTP_REQUIRED")
+    .bail()
+    .isLength({ min: 4, max: 4 })
+    .withMessage("OTP_INVALID_LENGTH")
+    .bail()
+    .isNumeric()
+    .withMessage("OTP_MUST_BE_NUMBERS"),
+];
