@@ -2,11 +2,12 @@
 import jwt from "jsonwebtoken";
 
 // Local Modules
+import {OTP as OTP_Template} from '../templates/email.js'
 import catchAsync from "../utils/catchAsync.util.js";
 
 import { generateToken } from "../utils/jwt.util.js";
 import { generateOTP, hashOTP, saveOTP, verifyOTP } from "../utils/otp.util.js";
-import { sendEmailOtp } from "../services/mail.service.js";
+import { sendEmail } from "../services/email.service.js";
 
 import TemporaryUserModel from "../models/temporary_user.model.js";
 import userModel from "../models/user.model.js";
@@ -96,7 +97,11 @@ export const saveTempEmail = catchAsync(async (req, res, next) => {
 
   await saveOTP("EMAIL_VERIFICATION", email, OTP_HASH);
 
-  await sendEmailOtp(email, OTP);
+  await sendEmail({
+      to: email,
+      subject: "Your Taggs OTP",
+      html: OTP_Template(OTP),
+    });
 
   // Update Temporary User's email
   await TemporaryUserModel.updateOne({ _id: decoded._id }, { email });
