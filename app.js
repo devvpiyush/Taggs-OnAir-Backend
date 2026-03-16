@@ -10,6 +10,7 @@ dotenv.config();
 
 // Local Modules
 import InternalRoutes from "./routers/internals.routes.js";
+import AuthRoutes from "./routers/auth.routes.js";
 
 // Create 'Express' App
 const app = express();
@@ -31,6 +32,7 @@ const MONGO_URI = process.env.MONGO_URI;
 
 // Routing
 app.use("/api/i", InternalRoutes);
+app.use("/api/auth", AuthRoutes);
 
 app.use((err, req, res, next) => {
   // Default values
