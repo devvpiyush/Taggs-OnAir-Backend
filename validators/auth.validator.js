@@ -69,15 +69,35 @@ export const ValidateEmail = [
     }),
 ];
 
-export const ValidateOtp = [
-  check("otp")
-    .trim()
+export const ValidatePassword = [
+  check("password")
     .notEmpty()
-    .withMessage("OTP_REQUIRED")
+    .withMessage("PASSWORD_REQUIRED")
     .bail()
-    .isLength({ min: 4, max: 4 })
-    .withMessage("OTP_INVALID_LENGTH")
+    .isLength({ min: 6, max: 64 })
+    .withMessage("PASSWORD_INVALID_LENGTH")
     .bail()
-    .isNumeric()
-    .withMessage("OTP_MUST_BE_NUMBERS"),
+    .not()
+    .matches(/\s/)
+    .withMessage("PASSWORD_CONTAINS_SPACES")
+    .bail()
+    .matches(/[a-zA-Z]/)
+    .bail()
+    .matches(/\d/)
+    .withMessage("PASSWORD_MUST_CONTAIN_NUMBER"),
+];
+
+export const ValidateEmailOrUsername = [
+  check("emailOfUsername")
+    .notEmpty()
+    .withMessage("EMAIL_OR_USERNAME_REQUIRED")
+    .bail()
+    .isLength({ min: 3, max: 254 })
+    .withMessage("EMAIL_OR_USERNAME_INVALID_LENGTH")
+    .bail()
+    .not()
+    .matches(/\s/)
+    .withMessage("EMAIL_OR_USERNAME_CONTAINS_SPACES")
+    .matches(/^[a-z0-9._]+$/)
+    .withMessage("USERNAME_INVALID_CHARACTERS"),
 ];
