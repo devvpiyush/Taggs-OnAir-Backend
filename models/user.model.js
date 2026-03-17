@@ -37,8 +37,9 @@ const UserSchema = new mongoose.Schema(
     },
     accountVisibility: {
       type: String,
-      enum: ["Private", "Public"],
-      default: "Public",
+      lowercase: true,
+      enum: ["private", "public"],
+      default: "public",
     },
     accountType: { type: String, enum: ["Personal"], default: "Personal" },
     identity: { type: String, enum: ["Normal"], default: "Normal" },
@@ -47,7 +48,7 @@ const UserSchema = new mongoose.Schema(
       enum: ["Active", "Suspended", "Deleted"],
       default: "Active",
     },
-    lastSeen: { type: Date, default: Date.now },
+    lastActiveAt: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },
     postsCount: { type: Number, default: 0 },
     followersCount: { type: Number, default: 0 },
@@ -55,5 +56,30 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// Virtuals
+UserSchema.virtual("age").get(function () {
+  if (!this.dateOfBirth) return null;
+  const today = new Date();
+  const birthDate = new Date(this.dateOfBirth);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
+});
+
+
+// Configurations
+UserSchema.set("toJSON", { virtuals: true });
+UserSchema.set("toObject", { virtuals: true });
 
 export default mongoose.model("User", UserSchema);
