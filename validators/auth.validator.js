@@ -86,18 +86,3 @@ export const ValidatePassword = [
     .matches(/\d/)
     .withMessage("PASSWORD_MUST_CONTAIN_NUMBER"),
 ];
-
-export const ValidateEmailOrUsername = [
-  check("emailOfUsername")
-    .notEmpty()
-    .withMessage("EMAIL_OR_USERNAME_REQUIRED")
-    .bail()
-    .isLength({ min: 3, max: 254 })
-    .withMessage("EMAIL_OR_USERNAME_INVALID_LENGTH")
-    .bail()
-    .not()
-    .matches(/\s/)
-    .withMessage("EMAIL_OR_USERNAME_CONTAINS_SPACES")
-    .matches(/^[a-z0-9._]+$/)
-    .withMessage("USERNAME_INVALID_CHARACTERS"),
-];

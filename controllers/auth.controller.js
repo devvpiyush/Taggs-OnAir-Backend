@@ -8,12 +8,9 @@ import UserModel from "../models/user.model.js";
 import AppError from "../classes/AppError.class.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 
-export const handleLogin = asyncHandler(async (req, res, next) => {
+export const handleUnLogin = asyncHandler(async (req, res, next) => {
   const result = await UserModel.findOne({
-    $or: [
-      { email: req.body.emailOrUsername },
-      { username: req.body.emailOrUsername },
-    ],
+    username: req.body.username,
   })
     .select("+password")
     .lean();
@@ -43,12 +40,6 @@ export const handleLogin = asyncHandler(async (req, res, next) => {
     );
   }
 
-  const MinimalUserData = pick(result, [
-    "name",
-    "isVerified",
-    "profilePictureUrl",
-  ]);
-
   const NewAuthToken = jwt.sign({ _id: result._id }, process.env.JWT_SECRET, {
     expiresIn: "14d",
   });
@@ -62,19 +53,28 @@ export const handleLogin = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     isSuccess: true,
-    data: MinimalUserData,
+    code: "LOGIN_SUCCESS",
+    message: "You are logged in successfully!",
   });
 });
 
 export const getMe = asyncHandler(async (req, res, next) => {
   const decoded = jwt.decode(req.cookies.AuthToken);
-  
-  const result = await UserModel.findOne({_id: decoded._id}).select("name profilePictureUrl isVerified dateOfBirth age")
-  
-  const MinimalUserData = pick(result, ["name", 'profilePictureUrl', 'isVerified', 'age']);
-  
+
+  const result = await UserModel.findOne({ _id: decoded._id }).select(
+    "username name profilePictureUrl isVerified dateOfBirth age",
+  );
+
+  const MinimalUserData = pick(result, [
+    "username",
+    "name",
+    "profilePictureUrl",
+    "isVerified",
+    "age",
+  ]);
+
   return res.status(200).json({
     isSuccess: true,
-    data: MinimalUserData
-  })
-})
+    data: MinimalUserData,
+  });
+});

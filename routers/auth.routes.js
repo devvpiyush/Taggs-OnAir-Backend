@@ -2,23 +2,27 @@
 import express from "express";
 
 // Local Modules
-import { handleLogin, getMe } from "../controllers/auth.controller.js";
-import { ValidatePassword } from "../validators/auth.validator.js";
+import { handleUnLogin, getMe } from "../controllers/auth.controller.js";
+import {
+  ValidatePassword,
+  ValidateUsername,
+} from "../validators/auth.validator.js";
 import { notRequireAuth, requireAuth } from "../utils/jwt_requirence.util.js";
 import handleValidate from "../middlewares/validate.middleware.js";
 
 const AuthRouter = express.Router();
 
 // GET Requests Handling
-AuthRouter.get("/me", requireAuth, getMe)
+AuthRouter.get("/me", requireAuth, getMe);
 
 // POST Requests Handling
 AuthRouter.post(
-  "/login",
+  "/un/login",
   notRequireAuth,
+  ValidateUsername,
   ValidatePassword,
   handleValidate,
-  handleLogin,
+  handleUnLogin,
 );
 
 export default AuthRouter;
