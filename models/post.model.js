@@ -15,6 +15,8 @@ const PostSchema = mongoose.Schema(
     viewsCount: { type: Number, default: 0 },
     likesCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
+    savesCount: { type: Number, default: 0 },
+    sharesCount: { type: Number, default: 0 },
     reportsCount: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false },
   },

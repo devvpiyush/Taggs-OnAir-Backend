@@ -18,7 +18,7 @@ export const handleUnLogin = asyncHandler(async (req, res, next) => {
   if (!result) {
     return next(
       new AppError(
-        "Cannot found any account associated with this username or email.",
+        "Cannot found any account associated with this username.",
         "USER_NOT_FOUND",
         404,
       ),
@@ -55,6 +55,7 @@ export const handleUnLogin = asyncHandler(async (req, res, next) => {
     isSuccess: true,
     code: "LOGIN_SUCCESS",
     message: "You are logged in successfully!",
+    meta: { username: req.body.username },
   });
 });
 

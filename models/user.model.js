@@ -77,7 +77,6 @@ UserSchema.virtual("age").get(function () {
   return age;
 });
 
-
 // Configurations
 UserSchema.set("toJSON", { virtuals: true });
 UserSchema.set("toObject", { virtuals: true });
