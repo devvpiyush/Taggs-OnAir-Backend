@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import http from "http";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
@@ -9,11 +10,13 @@ import mongoose from "mongoose";
 dotenv.config();
 
 // Local Modules
-import InternalRoutes from "./routers/internals.routes.js";
+import initSocket from "./utils/socket.util.js";
 import AuthRoutes from "./routers/auth.routes.js";
+import MyRoutes from "./routers/me.routes.js";
 
 // Create 'Express' App
 const app = express();
+const server = http.createServer(app);
 
 // Configurations
 app.use(
@@ -31,8 +34,8 @@ const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Routing
-app.use("/api/i", InternalRoutes);
 app.use("/api/auth", AuthRoutes);
+app.use("/api/me", MyRoutes);
 
 app.use((err, req, res, next) => {
   // Default values
@@ -54,7 +57,10 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json(response);
 });
 
-app.listen(PORT, () => {
+// Initializing Socket Connection
+initSocket(server);
+
+server.listen(PORT, () => {
   console.log(`✔  Server is Running at http://localhost:${PORT}`);
   mongoose
     .connect(MONGO_URI)
