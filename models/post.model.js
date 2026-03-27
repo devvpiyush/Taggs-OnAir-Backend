@@ -11,16 +11,37 @@ const PostSchema = mongoose.Schema(
       default: "thread",
     },
     postedBy: { type: mongoose.Types.ObjectId, required: true },
-    caption: { type: String, trim: true, default: "", maxlength: 850 },
+    caption: { type: String, trim: true, default: "", maxlength: 1850 },
     viewsCount: { type: Number, default: 0 },
     likesCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
     savesCount: { type: Number, default: 0 },
     sharesCount: { type: Number, default: 0 },
     reportsCount: { type: Number, default: 0 },
+    score: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true },
 );
+
+// Virtuals
+// PostSchema.virtual("score").get(function () {
+//   const views = Math.max(this.viewsCount, 1);
+
+//   const likeRate = this.likesCount / views;
+//   const commentRate = this.commentsCount / views;
+//   const saveRate = this.savesCount / views;
+//   const shareRate = this.sharesCount / views;
+//   const reportRate = this.reportsCount / views;
+
+//   const score =
+//     0.1 * likeRate +
+//     0.25 * commentRate +
+//     0.25 * saveRate +
+//     0.3 * shareRate -
+//     0.2 * reportRate;
+
+//   return Math.max(0, Math.min(1, score));
+// });
 
 export default mongoose.model("Post", PostSchema);

@@ -1,7 +1,7 @@
 // External Modules
 import { validationResult } from "express-validator";
 
-function handleValidate(req, res, next) {
+function result(req, res, next) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -16,4 +16,4 @@ function handleValidate(req, res, next) {
   next();
 }
 
-export default handleValidate;
+export default result;

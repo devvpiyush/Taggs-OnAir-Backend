@@ -5,7 +5,7 @@ import { check } from "express-validator";
 import { RESERVED_USERNAMES } from "../data/Reserves.js";
 import { USERNAME_PROFANITES } from "../data/Profanites.js";
 
-export const ValidateUsername = [
+export const checkUsername = [
   check("username")
     .notEmpty()
     .withMessage("USERNAME_REQUIRED")
@@ -47,7 +47,7 @@ export const ValidateUsername = [
     }),
 ];
 
-export const ValidateEmail = [
+export const checkEmail = [
   check("email")
     .trim()
     .toLowerCase()
@@ -81,8 +81,8 @@ export const ValidatePassword = [
     .matches(/\s/)
     .withMessage("PASSWORD_CONTAINS_SPACES")
     .bail()
-    .matches(/[a-zA-Z]/)
-    .bail()
-    .matches(/\d/)
-    .withMessage("PASSWORD_MUST_CONTAIN_NUMBER"),
+    .not()
+    .matches(/^[A-Za-z\d!@#$%^&*()\[\]\-_+={}|;:"<>,./?~]+$/)
+    .withMessage("PASSWORD_INVALID_CHARACTERS")
+    .bail(),
 ];
