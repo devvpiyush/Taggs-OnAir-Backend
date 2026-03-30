@@ -13,6 +13,7 @@ dotenv.config();
 import initSocket from "./utils/socket.util.js";
 import AuthRoutes from "./routers/auth.routes.js";
 import PostRoutes from "./routers/post.routes.js";
+import FuncRoutes from "./routers/func.routes.js";
 
 // Create 'Express' App
 const app = express();
@@ -36,6 +37,7 @@ const MONGO_URI = process.env.MONGO_URI;
 // Routing
 app.use("/api/auth", AuthRoutes);
 app.use("/api/post", PostRoutes);
+app.use("/api/func", FuncRoutes);
 
 app.use((err, req, res, next) => {
   // Default values
