@@ -7,6 +7,7 @@ import UserModel from "../models/user.model.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 
 export const handleSearch = asyncHandler(async (req, res, next) => {
+console.log(req.cookies)
 const decoded = jwt.decode(req.cookies.AuthToken, process.env.JWT_SECRET);
 console.log(decoded);
 
