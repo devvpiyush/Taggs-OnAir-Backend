@@ -8,7 +8,7 @@ import asyncHandler from "../utils/asyncHandler.util.js";
 
 export const handleSearch = asyncHandler(async (req, res, next) => {
 const decoded = jwt.decode(req.cookies.AuthToken, process.env.JWT_SECRET);
-console.log(decoded)
+console.log(decoded);
 
   const results = await UserModel.find({
     $or: [{ username: { $regex: req.query.query } }],
