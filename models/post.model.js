@@ -10,7 +10,11 @@ const PostSchema = mongoose.Schema(
       enum: ["thread", "post"],
       default: "thread",
     },
-    postedBy: { type: mongoose.Types.ObjectId, required: true },
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     caption: { type: String, trim: true, default: "", maxlength: 1850 },
     viewsCount: { type: Number, default: 0 },
     likesCount: { type: Number, default: 0 },
@@ -23,6 +27,9 @@ const PostSchema = mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// Indexes
+PostSchema.index({ score: -1 });
 
 // Virtuals
 // PostSchema.virtual("score").get(function () {
