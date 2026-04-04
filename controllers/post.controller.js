@@ -25,13 +25,13 @@ export const loadInitialFeed = asyncHandler(async (req, res, next) => {
   const fetchPosts = await PostModel.find({ isDeleted: false })
     .sort({ score: -1, createdAt: -1 })
     .limit(8)
-    .populate("postedBy", "username isVerified")
+    .populate("postedBy", "profilePictureUrl username name isVerified")
     .select("caption type viewsCount likesCount commentsCount createdAt");
 
   return res.status(200).json({
     isSuccess: true,
     code: "POSTS_FETCHED",
     message: "Posts fetched Successfully!",
-    meta: { posts: fetchPosts },
+    meta: { data: fetchPosts },
   });
 });
