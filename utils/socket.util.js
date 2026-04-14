@@ -5,6 +5,15 @@ import { Server } from "socket.io";
 import { heartBeat } from "./events.util.js";
 import AuthMiddleware from "../middlewares/auth.middleware.js";
 
+let io;
+
+export const getIo = () => {
+  if (!io) {
+    throw new Error("WebSocket is not established yet.");
+  }
+  return io;
+};
+
 const initSocket = (server) => {
   const io = new Server(server, {
     cors: { origin: process.env.CLIENT_URL, credentials: true },

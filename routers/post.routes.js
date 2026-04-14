@@ -2,7 +2,11 @@
 import express from "express";
 
 // Local Modules
-import { create, loadInitialFeed } from "../controllers/post.controller.js";
+import {
+  create,
+  doLike,
+  loadInitialFeed,
+} from "../controllers/post.controller.js";
 import { checkCaption } from "../validators/post.validator.js";
 import validationResult from "../middlewares/validate.middleware.js";
 
@@ -13,5 +17,6 @@ PostRouter.get("/feed", loadInitialFeed);
 
 // POST Requests Handling
 PostRouter.post("/new/create", checkCaption, validationResult, create);
+PostRouter.post("/like/:id", doLike);
 
 export default PostRouter;
