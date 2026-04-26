@@ -35,7 +35,3 @@ export const loadInitialFeed = asyncHandler(async (req, res, next) => {
     meta: { data: fetchPosts },
   });
 });
-
-export const doLike = asyncHandler(async (req, res, next) => {
-  console.log(req.params);
-});
