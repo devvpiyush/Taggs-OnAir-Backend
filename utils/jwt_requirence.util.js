@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 // Local Modules
 import AppError from "../classes/AppError.class.js";
 
-export function requireAuth(req, res, next) {
+function requireAuth(req, res, next) {
   if (!req.cookies?.AuthToken) {
     return next(new AppError("You cannot do this.", "UNAUTHORIZED", 401));
   }
@@ -17,7 +17,7 @@ export function requireAuth(req, res, next) {
   }
 }
 
-export function notRequireAuth(req, res, next) {
+function notRequireAuth(req, res, next) {
   if (!req.cookies?.AuthToken) return next();
 
   try {
@@ -27,3 +27,5 @@ export function notRequireAuth(req, res, next) {
     return next();
   }
 }
+
+export default { requireAuth, notRequireAuth };

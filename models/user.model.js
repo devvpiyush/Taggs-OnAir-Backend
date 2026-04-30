@@ -41,12 +41,23 @@ const UserSchema = new mongoose.Schema(
       enum: ["private", "public"],
       default: "public",
     },
-    accountType: { type: String, enum: ["Personal"], default: "Personal" },
-    identity: { type: String, enum: ["Normal"], default: "Normal" },
+    accountType: {
+      type: String,
+      lowercase: true,
+      enum: ["personal"],
+      default: "personal",
+    },
+    identity: {
+      type: String,
+      lowercase: true,
+      enum: ["normal"],
+      default: "normal",
+    },
     accountStatus: {
       type: String,
-      enum: ["Active", "Suspended", "Deleted"],
-      default: "Active",
+      lowercase: true,
+      enum: ["active", "suspended", "deleted"],
+      default: "active",
     },
     lastActiveAt: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },
@@ -76,9 +87,5 @@ UserSchema.virtual("age").get(function () {
 
   return age;
 });
-
-// Configurations
-UserSchema.set("toJSON", { virtuals: true });
-UserSchema.set("toObject", { virtuals: true });
 
 export default mongoose.model("User", UserSchema);

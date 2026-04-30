@@ -8,7 +8,7 @@ import UserModel from "../models/user.model.js";
 import AppError from "../classes/AppError.class.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 
-export const handleLogin = asyncHandler(async (req, res, next) => {
+const handleLogin = asyncHandler(async (req, res, next) => {
   const result = await UserModel.findOne({
     $or: [
       { username: req.body.usernameOrEmail },
@@ -62,11 +62,11 @@ export const handleLogin = asyncHandler(async (req, res, next) => {
   });
 });
 
-export const getMe = asyncHandler(async (req, res, next) => {
+const getMe = asyncHandler(async (req, res, next) => {
   const decoded = jwt.decode(req.cookies.AuthToken);
 
   const result = await UserModel.findOne({ _id: decoded._id }).select(
-    "username name profilePictureUrl isVerified dateOfBirth age",
+    "-_id username name profilePictureUrl isVerified dateOfBirth age",
   );
 
   const MinimalUserData = pick(result, [
@@ -79,6 +79,10 @@ export const getMe = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     isSuccess: true,
-    data: MinimalUserData,
+    code: "GOT_YOU",
+    message: "Got your Profile.",
+    meta: { data: MinimalUserData },
   });
 });
+
+export default { handleLogin, getMe };

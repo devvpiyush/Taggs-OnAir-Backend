@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "../utils/asyncHandler.util.js";
 import PostModel from "../models/post.model.js";
 
-export const create = asyncHandler(async (req, res, next) => {
+const create = asyncHandler(async (req, res, next) => {
   const decoded = jwt.verify(req.cookies.AuthToken, process.env.JWT_SECRET);
 
   const createPost = await PostModel.create({
@@ -21,7 +21,7 @@ export const create = asyncHandler(async (req, res, next) => {
   });
 });
 
-export const loadInitialFeed = asyncHandler(async (req, res, next) => {
+const initialLoad = asyncHandler(async (req, res, next) => {
   const fetchPosts = await PostModel.find({ isDeleted: false })
     .sort({ score: -1, createdAt: -1 })
     .limit(8)
@@ -35,3 +35,5 @@ export const loadInitialFeed = asyncHandler(async (req, res, next) => {
     meta: { data: fetchPosts },
   });
 });
+
+export default { create, initialLoad };
