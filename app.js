@@ -15,6 +15,7 @@ import AuthRoutes from "./routers/auth.routes.js";
 import PostRoutes from "./routers/post.routes.js";
 import FuncRoutes from "./routers/func.routes.js";
 import UserRoutes from "./routers/user.routes.js";
+import ConnectivityRoutes from "./routers/connectivity.routes.js";
 
 // Create 'Express' App
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/post", PostRoutes);
 app.use("/api/func", FuncRoutes);
 app.use("/api/user", UserRoutes);
+app.use("/api/connect", ConnectivityRoutes);
 
 app.use((err, req, res, next) => {
   // Default values
