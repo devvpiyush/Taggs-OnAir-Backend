@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import UserModel from "../models/user.model.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 
-const handleSearch = asyncHandler(async (req, res, next) => {
+const searchAccounts = asyncHandler(async (req, res, next) => {
   const decoded = jwt.decode(req.cookies.AuthToken, process.env.JWT_SECRET);
 
   const results = await UserModel.find({
@@ -25,4 +25,4 @@ const handleSearch = asyncHandler(async (req, res, next) => {
   });
 });
 
-export default { handleSearch };
+export default { searchAccounts };

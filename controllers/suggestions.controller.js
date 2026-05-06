@@ -6,7 +6,7 @@ import UserModel from "../models/user.model.js";
 import AppError from "../classes/AppError.class.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
 
-const suggest = asyncHandler(async (req, res, next) => {
+const suggests = asyncHandler(async (req, res, next) => {
   const decoded = jwt.decode(req.cookies.AuthToken, process.env.JWT_SECRET);
 
   const suggestions = await UserModel.find({
@@ -26,4 +26,4 @@ const suggest = asyncHandler(async (req, res, next) => {
   });
 });
 
-export default { suggest };
+export default { suggests };
