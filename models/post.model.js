@@ -10,10 +10,34 @@ const PostSchema = mongoose.Schema(
       enum: ["thread", "post"],
       default: "thread",
     },
-    postedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    creator: {
+      creatorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      creatorUsername: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        required: true,
+        minlength: 3,
+        maxlength: 21,
+      },
+      creatorName: { type: String, trim: true, required: true, maxlength: 30 },
+      creatorProfilePictureUrl: {
+        type: String,
+        trim: true,
+        default:
+          "https://res.cloudinary.com/dtgta9nbo/image/upload/v1775106730/No_Profile_Picture_Icon_Tiktok_snc7gr.jpg",
+      },
+      isCreatorVerified: { type: Boolean, default: false },
+      creatorAccountStatus: {
+        type: String,
+        lowercase: true,
+        enum: ["active", "suspended", "deleted"],
+        default: "active",
+      },
     },
     caption: { type: String, trim: true, default: "", maxlength: 1850 },
     viewsCount: { type: Number, default: 0 },

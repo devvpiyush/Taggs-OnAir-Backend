@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
     profilePictureUrl: {
       type: String,
       default:
-        "https://res.cloudinary.com/dtgta9nbo/image/upload/v1771600413/Type_Icon_Size_XS_Online_Indicator_None_v8znol.svg",
+        "https://res.cloudinary.com/dtgta9nbo/image/upload/v1775106730/No_Profile_Picture_Icon_Tiktok_snc7gr.jpg",
     },
     accountVisibility: {
       type: String,
