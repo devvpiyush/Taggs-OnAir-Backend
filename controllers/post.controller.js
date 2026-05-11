@@ -34,7 +34,7 @@ const create = asyncHandler(async (req, res, next) => {
   });
 });
 
-const initialLoad = asyncHandler(async (req, res, next) => {
+const loadFeed = asyncHandler(async (req, res, next) => {
   const decoded = jwt.verify(req.cookies.AuthToken, process.env.JWT_SECRET);
 
   // Fetch Feed
@@ -48,4 +48,4 @@ const initialLoad = asyncHandler(async (req, res, next) => {
   });
 });
 
-export default { create, initialLoad };
+export default { create, loadFeed };

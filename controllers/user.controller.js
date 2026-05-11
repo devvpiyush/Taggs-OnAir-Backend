@@ -12,7 +12,7 @@ const fetch = asyncHandler(async (req, res, next) => {
     username: param,
     accountStatus: "active",
   }).select(
-    "-_id identity username name bio profilePictureUrl accountVisibility accountType isVerified postsCount followersCount followingCount",
+    "-_id identity username name bio profilePictureUrl accountVisibility accountType isVerified postsCount threadsCount followersCount followingCount",
   );
 
   if (!result)

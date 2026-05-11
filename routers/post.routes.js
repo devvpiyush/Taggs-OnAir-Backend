@@ -9,7 +9,7 @@ import validationResult from "../middlewares/validate.middleware.js";
 const PostRouter = express.Router();
 
 // GET Requests Handling
-PostRouter.get("/feed", controller.initialLoad);
+PostRouter.get("/feed", controller.loadFeed);
 
 // POST Requests Handling
 PostRouter.post(

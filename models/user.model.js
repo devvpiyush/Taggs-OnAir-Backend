@@ -61,6 +61,7 @@ const UserSchema = new mongoose.Schema(
     },
     lastActiveAt: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },
+    threadsCount: { type: Number, default: 0 },
     postsCount: { type: Number, default: 0 },
     followersCount: { type: Number, default: 0 },
     followingCount: { type: Number, default: 0 },

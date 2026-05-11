@@ -31,14 +31,21 @@ export const createThread = async (
     },
   });
 
-  return;
+  if (
+    await UserModel.findOneAndUpdate(
+      { _id: creatorId },
+      { $inc: { threadsCount: 1 } },
+    )
+  ) {
+    return;
+  }
 };
 
 export const fetchFeed = async (maxAmount, userId) => {
   const results = await PostModel.find({
     isDeleted: false,
     "creator.creatorAccountStatus": "active",
-   "creator.creatorId": { $ne: userId},
+    "creator.creatorId": { $ne: userId },
   })
     .sort({ score: -1, createdAt: -1 })
     .limit(maxAmount)
