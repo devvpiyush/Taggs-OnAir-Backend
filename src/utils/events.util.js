@@ -1,6 +1,6 @@
 // Local Modules
 import userModel from "../models/user.model.js";
-import asyncHandler from "../utils/asyncHandler.util.js";
+import asyncHandler from "./asyncHandler.util.js";
 
 export const heartBeat = (socket) => {
   socket.on(

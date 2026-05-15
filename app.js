@@ -10,13 +10,13 @@ import mongoose from "mongoose";
 dotenv.config();
 
 // Local Modules
-import initSocket from "./utils/socket.util.js";
-import AuthRoutes from "./routers/auth.routes.js";
-import PostRoutes from "./routers/post.routes.js";
-import SearchRouter from "./routers/search.routes.js";
-import UserRoutes from "./routers/user.routes.js";
-import FollowRouter from "./routers/follow.routes.js";
-import SuggestionsRouter from "./routers/suggestions.routes.js";
+import initSocket from "./src/utils/socket.util.js";
+import AuthRoutes from "./src/routers/auth.routes.js";
+import PostRoutes from "./src/routers/post.routes.js";
+import SearchRouter from "./src/routers/search.routes.js";
+import UserRoutes from "./src/routers/user.routes.js";
+import FollowRouter from "./src/routers/follow.routes.js";
+import SuggestionsRouter from "./src/routers/suggestions.routes.js";
 
 // Create 'Express' App
 const app = express();

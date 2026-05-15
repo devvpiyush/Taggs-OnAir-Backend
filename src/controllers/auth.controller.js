@@ -1,24 +1,18 @@
 // External Modules
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import pick from "lodash/pick.js";
 
 // Local Modules
 import UserModel from "../models/user.model.js";
 import AppError from "../classes/AppError.class.js";
 import asyncHandler from "../utils/asyncHandler.util.js";
+import { findUser, verifyPassword } from "../services/auth.service.js";
+import { generateToken, verifyToken } from "../utils/jwt.util.js";
 
-const handleLogin = asyncHandler(async (req, res, next) => {
-  const result = await UserModel.findOne({
-    $or: [
-      { username: req.body.usernameOrEmail },
-      { email: req.body.usernameOrEmail },
-    ],
-  })
-    .select("+password")
-    .lean();
+const handleLogin = async (req, res, next) => {
+  // 1. Find the User
+  const User = await findUser(req.body.usernameOrEmail);
 
-  if (!result) {
+  if (User.flag === "RED" || User.code === "NOT_FOUND")
     return next(
       new AppError(
         "Cannot found any account associated with this username or email.",
@@ -26,28 +20,30 @@ const handleLogin = asyncHandler(async (req, res, next) => {
         404,
       ),
     );
-  }
 
-  const verifyPassword = await bcrypt.compare(
+  // 2. Verify the Passwords
+  const passwordVerificationResult = await verifyPassword(
     req.body.password,
-    result.password,
+    User.password,
   );
 
-  if (!verifyPassword) {
+  if (
+    passwordVerificationResult.flag === "RED" ||
+    passwordVerificationResult.code === "INCORRECT_PASSWORD"
+  ) {
     return next(
       new AppError(
-        "The entered Password is incorrect.",
+        "The entered password is incorrect.",
         "PASSWORD_INCORRECT",
         401,
       ),
     );
   }
 
-  const NewAuthToken = jwt.sign({ _id: result._id }, process.env.JWT_SECRET, {
-    expiresIn: "14d",
-  });
+  // 3. Generate JsonWebToken
+  const token = generateToken({ _id: User._id });
 
-  res.cookie("AuthToken", NewAuthToken, {
+  res.cookie("token", token, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
@@ -58,12 +54,11 @@ const handleLogin = asyncHandler(async (req, res, next) => {
     isSuccess: true,
     code: "LOGIN_SUCCESS",
     message: "You are logged in successfully!",
-    meta: { usernameOrEmail: req.body.usernameOrEmail },
   });
-});
+};
 
 const getMe = asyncHandler(async (req, res, next) => {
-  const decoded = jwt.decode(req.cookies.AuthToken);
+  const decoded = verifyToken(req.cookies.token);
 
   const result = await UserModel.findOne({ _id: decoded._id }).select(
     "-_id username name profilePictureUrl isVerified dateOfBirth age",

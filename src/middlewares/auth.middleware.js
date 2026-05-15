@@ -9,7 +9,7 @@ const AuthMiddleware = (socket, next) => {
 
   if (!AuthCookie) return socket.disconnect();
 
-  const decoded = jwt.verify(AuthCookie.AuthToken, process.env.JWT_SECRET);
+  const decoded = jwt.verify(AuthCookie.token, process.env.JWT_SECRET);
 
   socket.userId = decoded._id;
 

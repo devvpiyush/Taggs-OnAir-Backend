@@ -52,7 +52,7 @@ const PostSchema = mongoose.Schema(
   { timestamps: true },
 );
 
-// Indexes
+// Indexing
 PostSchema.index({ score: -1 });
 
 // Virtuals

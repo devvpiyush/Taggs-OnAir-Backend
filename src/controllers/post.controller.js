@@ -10,7 +10,7 @@ import {
 } from "../services/post.service.js";
 
 const create = asyncHandler(async (req, res, next) => {
-  const decoded = jwt.verify(req.cookies.AuthToken, process.env.JWT_SECRET);
+  const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
 
   // Find Creator's Info
   const creator = await findCreator(decoded._id);
@@ -35,7 +35,7 @@ const create = asyncHandler(async (req, res, next) => {
 });
 
 const loadFeed = asyncHandler(async (req, res, next) => {
-  const decoded = jwt.verify(req.cookies.AuthToken, process.env.JWT_SECRET);
+  const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
 
   // Fetch Feed
   const results = await fetchFeed(10, decoded._id);

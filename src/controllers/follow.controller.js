@@ -9,7 +9,7 @@ import asyncHandler from "../utils/asyncHandler.util.js";
 
 const handleFollow = asyncHandler(async (req, res, next) => {
   // Constants
-  const decoded = jwt.decode(req.cookies.AuthToken);
+  const decoded = jwt.decode(req.cookies.token);
   const followingId = req.params.followingId;
 
   const check = await FollowModel.findOne({

@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 import AppError from "../classes/AppError.class.js";
 
 function requireAuth(req, res, next) {
-  if (!req.cookies?.AuthToken) {
+  if (!req.cookies?.token) {
     return next(new AppError("You cannot do this.", "UNAUTHORIZED", 401));
   }
 
   try {
-    jwt.verify(req.cookies?.AuthToken, process.env.JWT_SECRET);
+    jwt.verify(req.cookies?.token, process.env.JWT_SECRET);
     return next();
   } catch {
     return next(new AppError("You cannot do this.", "UNAUTHORIZED", 401));
@@ -18,10 +18,10 @@ function requireAuth(req, res, next) {
 }
 
 function notRequireAuth(req, res, next) {
-  if (!req.cookies?.AuthToken) return next();
+  if (!req.cookies?.token) return next();
 
   try {
-    jwt.verify(req.cookies?.AuthToken, process.env.JWT_SECRET);
+    jwt.verify(req.cookies?.token, process.env.JWT_SECRET);
     return next(new AppError("You cannot do this.", "UNAUTHORIZED", 401));
   } catch {
     return next();

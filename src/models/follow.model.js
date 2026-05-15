@@ -21,4 +21,7 @@ const FollowSchema = mongoose.Schema(
   { timestamps: true },
 );
 
+// Indexing
+FollowSchema.index({ followerId: 1, followingId: 1 });
+
 export default mongoose.model("Follow", FollowSchema);
